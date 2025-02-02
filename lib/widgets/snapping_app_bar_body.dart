@@ -72,14 +72,7 @@ class SnappingAppBarBody extends StatelessWidget {
         title: AnimatedOpacity(
           duration: const Duration(milliseconds: 200),
           opacity: isCollapsed ? 1 : 0,
-          child: ColoredBox(
-            color: collapsedBackgroundColor ?? Colors.white,
-            child: SizedBox(
-              width: double.infinity,
-              height: collapsedBarHeight,
-              child: collapsedBar,
-            ),
-          ),
+          child: collapsedBar,
         ),
         automaticallyImplyLeading: automaticallyImplyLeading,
         backgroundColor: isCollapsed ? collapsedBackgroundColor : expandedBackgroundColor,
