@@ -7,7 +7,8 @@ class SnappingAppBarBody extends StatelessWidget {
     required this.expandedContent,
     required this.collapsedBar,
     required this.collapsedBarHeight,
-    required this.body,
+    required this.slivers,
+    this.customScrollViewBuilder,
     this.scrollBehavior,
     this.leading,
     this.floating = false,
@@ -31,7 +32,7 @@ class SnappingAppBarBody extends StatelessWidget {
   final Widget expandedContent;
   final List<Widget>? actions;
   final Widget collapsedBar;
-  final Widget body;
+  final List<Widget> slivers;
   final double? expandedContentHeight;
   final double collapsedBarHeight;
   final PreferredSizeWidget? bottom;
@@ -48,52 +49,59 @@ class SnappingAppBarBody extends StatelessWidget {
   final bool automaticallyImplyLeading;
   final bool forceElevated;
   final double? elevation;
+  final CustomScrollView Function(List<Widget> slivers)? customScrollViewBuilder;
 
   @override
   Widget build(BuildContext context) {
+    final slivers = [
+      SliverAppBar(
+        actions: actions,
+        snap: snap,
+        floating: floating,
+        stretch: stretch,
+        bottom: bottom,
+        expandedHeight: expandedContentHeight,
+        collapsedHeight: collapsedBarHeight,
+        toolbarHeight: collapsedBarHeight,
+        centerTitle: false,
+        pinned: pinned,
+        elevation: elevation,
+        forceElevated: forceElevated,
+        forceMaterialTransparency: true,
+        titleSpacing: 0,
+        title: AnimatedOpacity(
+          duration: const Duration(milliseconds: 200),
+          opacity: isCollapsed ? 1 : 0,
+          child: ColoredBox(
+            color: collapsedBackgroundColor ?? Colors.white,
+            child: SizedBox(
+              width: double.infinity,
+              height: collapsedBarHeight,
+              child: collapsedBar,
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: automaticallyImplyLeading,
+        backgroundColor: isCollapsed ? collapsedBackgroundColor : expandedBackgroundColor,
+        leading: leading,
+        flexibleSpace: FlexibleSpaceBar(
+          background: expandedContent,
+        ),
+      ),
+      ...this.slivers,
+    ];
+
     return Stack(
       children: [
         if (backdropWidget != null) backdropWidget!,
-        CustomScrollView(
-          controller: scrollController,
-          scrollBehavior: scrollBehavior,
-          slivers: [
-            SliverAppBar(
-              actions: actions,
-              snap: snap,
-              floating: floating,
-              stretch: stretch,
-              bottom: bottom,
-              expandedHeight: expandedContentHeight,
-              collapsedHeight: collapsedBarHeight,
-              centerTitle: false,
-              pinned: pinned,
-              elevation: elevation,
-              forceElevated: forceElevated,
-              title: AnimatedOpacity(
-                duration: const Duration(milliseconds: 200),
-                opacity: isCollapsed ? 1 : 0,
-                child: collapsedBar,
-              ),
-              automaticallyImplyLeading: automaticallyImplyLeading,
-              backgroundColor: isCollapsed
-                  ? collapsedBackgroundColor
-                  : expandedBackgroundColor,
-              leading: leading,
-              flexibleSpace: FlexibleSpaceBar(
-                background: expandedContent,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height,
-                ),
-                child: body,
-              ),
-            ),
-          ],
-        ),
+        if (customScrollViewBuilder != null)
+          customScrollViewBuilder!(slivers)
+        else
+          CustomScrollView(
+            controller: scrollController,
+            scrollBehavior: scrollBehavior,
+            slivers: slivers,
+          ),
       ],
     );
   }

@@ -22,7 +22,7 @@ class SliverSnap extends HookWidget {
   final Widget collapsedContent;
 
   /// The content that is shown below the appbar
-  final Widget body;
+  final List<Widget> slivers;
 
   /// The height of the [ExpandedContent]
   final double? expandedContentHeight;
@@ -188,11 +188,16 @@ class SliverSnap extends HookWidget {
   /// Defaults to `0.0`
   final double elevation;
 
+  /// A builder that provides a custom [CustomScrollView] widget.
+  /// This is useful when you want to customize the behavior of the [CustomScrollView]
+  final CustomScrollView Function(List<Widget> slivers)? customScrollViewBuilder;
+
   const SliverSnap({
     super.key,
     required this.expandedContent,
     required this.collapsedContent,
-    required this.body,
+    required this.slivers,
+    this.customScrollViewBuilder,
     this.pinned = true,
     this.collapsedBarHeight = 60.0,
     this.animationDuration = const Duration(milliseconds: 300),
@@ -222,8 +227,7 @@ class SliverSnap extends HookWidget {
         expandedContentHeight ?? MediaQuery.of(context).size.height / 2;
 
     final controller = scrollController ?? useScrollController();
-    final snappingScrollNotificationHandler =
-        SnappingScrollNotificationHandler.withHapticFeedback(
+    final snappingScrollNotificationHandler = SnappingScrollNotificationHandler.withHapticFeedback(
       expandedBarHeight: defaultExpandedContentHeight,
       collapsedBarHeight: collapsedBarHeight,
       bottomBarHeight: bottom?.preferredSize.height ?? 0.0,
@@ -232,8 +236,7 @@ class SliverSnap extends HookWidget {
     final animatedOpacity = useState(1.0);
 
     return NotificationListener<ScrollNotification>(
-      onNotification: (notification) =>
-          snappingScrollNotificationHandler.handleScrollNotification(
+      onNotification: (notification) => snappingScrollNotificationHandler.handleScrollNotification(
         notification: notification,
         isCollapsedValueNotifier: isCollapsedValueNotifier,
         onCollapseStateChanged: (isCollapsed, scrollingOffset, maxExtent) {
@@ -244,8 +247,7 @@ class SliverSnap extends HookWidget {
           );
 
           scrollPercentValueNotifier.value = 1 - scrollingOffset / maxExtent;
-          animatedOpacity.value =
-              _calculateOpacity(scrollPercentValueNotifier.value);
+          animatedOpacity.value = _calculateOpacity(scrollPercentValueNotifier.value);
         },
         scrollController: controller,
       ),
@@ -266,7 +268,8 @@ class SliverSnap extends HookWidget {
         snap: snap,
         stretch: stretch,
         automaticallyImplyLeading: automaticallyImplyLeading,
-        body: body,
+        customScrollViewBuilder: customScrollViewBuilder,
+        slivers: slivers,
         scrollBehavior: scrollBehavior,
         collapsedBarHeight: collapsedBarHeight,
         expandedContentHeight: defaultExpandedContentHeight,

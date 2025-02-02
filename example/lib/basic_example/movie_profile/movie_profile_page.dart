@@ -46,11 +46,15 @@ class MovieProfilePage extends HookWidget {
           ),
         ),
       ),
-      body: Material(
-        elevation: 7,
-        borderRadius: getBorderRadius(isCollapsedValueNotifier),
-        child: PageBodyWidget(movieDetails: movieDetails),
-      ),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Material(
+            elevation: 7,
+            borderRadius: getBorderRadius(isCollapsedValueNotifier),
+            child: PageBodyWidget(movieDetails: movieDetails),
+          ),
+        ),
+      ],
     );
   }
 
