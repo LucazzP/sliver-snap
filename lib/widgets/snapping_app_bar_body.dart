@@ -86,18 +86,23 @@ class SnappingAppBarBody extends StatelessWidget {
       ...this.slivers,
     ];
 
-    return Stack(
-      children: [
-        if (backdropWidget != null) backdropWidget!,
-        if (customScrollViewBuilder != null)
-          customScrollViewBuilder!(slivers)
-        else
-          CustomScrollView(
+    final child = customScrollViewBuilder != null
+        ? customScrollViewBuilder!(slivers)
+        : CustomScrollView(
             controller: scrollController,
             scrollBehavior: scrollBehavior,
             slivers: slivers,
-          ),
-      ],
-    );
+          );
+
+    if (backdropWidget != null) {
+      return Stack(
+        children: [
+          backdropWidget!,
+          child,
+        ],
+      );
+    }
+
+    return child;
   }
 }
