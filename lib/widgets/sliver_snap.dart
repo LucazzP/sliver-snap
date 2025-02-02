@@ -193,6 +193,7 @@ class SliverSnap extends HookWidget {
   final CustomScrollView Function(List<Widget> slivers)? customScrollViewBuilder;
 
   final bool forceMaterialTransparency;
+  final double expandThresholdRatio;
 
   const SliverSnap({
     super.key,
@@ -221,6 +222,7 @@ class SliverSnap extends HookWidget {
     this.forceElevated = false,
     this.elevation = 0.0,
     this.forceMaterialTransparency = false,
+    this.expandThresholdRatio = 1.75,
   });
 
   @override
@@ -242,6 +244,7 @@ class SliverSnap extends HookWidget {
       onNotification: (notification) => snappingScrollNotificationHandler.handleScrollNotification(
         notification: notification,
         isCollapsedValueNotifier: isCollapsedValueNotifier,
+        expandThresholdRatio: expandThresholdRatio,
         onCollapseStateChanged: (isCollapsed, scrollingOffset, maxExtent) {
           onCollapseStateChanged?.call(
             isCollapsedValueNotifier.value,

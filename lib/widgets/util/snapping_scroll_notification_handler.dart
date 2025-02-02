@@ -46,13 +46,14 @@ class SnappingScrollNotificationHandler {
     required ScrollController scrollController,
     required ValueNotifier<bool> isCollapsedValueNotifier,
     CollapsingStateCallback? onCollapseStateChanged,
+    double expandThresholdRatio = 1.75,
   }) {
     /// The position at which we either collapse or expand
     ///
     /// the threshold which if we exceed then we should expand
     /// otherwise we should collapse the appbar
     final double expandThresholdPosition =
-        (expandedBarHeight - collapsedBarHeight) / 1.75;
+        (expandedBarHeight - collapsedBarHeight) / expandThresholdRatio;
 
     /// The current position of the scrolling
     final double currentScrollingPosition = scrollController.offset;
