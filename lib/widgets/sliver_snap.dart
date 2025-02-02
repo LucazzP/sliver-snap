@@ -192,6 +192,8 @@ class SliverSnap extends HookWidget {
   /// This is useful when you want to customize the behavior of the [CustomScrollView]
   final CustomScrollView Function(List<Widget> slivers)? customScrollViewBuilder;
 
+  final bool forceMaterialTransparency;
+
   const SliverSnap({
     super.key,
     required this.expandedContent,
@@ -218,6 +220,7 @@ class SliverSnap extends HookWidget {
     this.automaticallyImplyLeading = false,
     this.forceElevated = false,
     this.elevation = 0.0,
+    this.forceMaterialTransparency = false,
   });
 
   @override
@@ -278,6 +281,7 @@ class SliverSnap extends HookWidget {
         isCollapsed: isCollapsedValueNotifier.value,
         forceElevated: forceElevated,
         elevation: elevation,
+        forceMaterialTransparency: forceMaterialTransparency,
       ),
     );
   }

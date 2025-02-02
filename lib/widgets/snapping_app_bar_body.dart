@@ -25,6 +25,7 @@ class SnappingAppBarBody extends StatelessWidget {
     this.automaticallyImplyLeading = false,
     this.elevation = 0,
     this.forceElevated = false,
+    this.forceMaterialTransparency = false,
   });
 
   final ScrollController scrollController;
@@ -48,6 +49,7 @@ class SnappingAppBarBody extends StatelessWidget {
   final ScrollBehavior? scrollBehavior;
   final bool automaticallyImplyLeading;
   final bool forceElevated;
+  final bool forceMaterialTransparency;
   final double? elevation;
   final CustomScrollView Function(List<Widget> slivers)? customScrollViewBuilder;
 
@@ -67,7 +69,7 @@ class SnappingAppBarBody extends StatelessWidget {
         pinned: pinned,
         elevation: elevation,
         forceElevated: forceElevated,
-        forceMaterialTransparency: true,
+        forceMaterialTransparency: forceMaterialTransparency,
         titleSpacing: 0,
         title: AnimatedOpacity(
           duration: const Duration(milliseconds: 200),
