@@ -119,14 +119,14 @@ class SliverSnap extends HookWidget {
   /// A list of action widgets to display in a row,
   /// after the [collapsedContent] widget.
   ///
-  final List<Widget>? actions;
+  final List<Widget> Function(bool isCollapsed)? actions;
 
   /// The leading widget at the start of the appbar,
   /// typically an [Icon] or an [IconButton].
   ///
   /// It can also be a [BackButton].
   ///
-  final Widget? leading;
+  final Widget Function(bool isCollapsed)? leading;
 
   /// Provides Control of the AppBar's leading widget.
   ///

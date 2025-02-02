@@ -31,13 +31,13 @@ class SnappingAppBarBody extends StatelessWidget {
   final ScrollController scrollController;
 
   final Widget expandedContent;
-  final List<Widget>? actions;
+  final List<Widget> Function(bool isCollapsed)? actions;
   final Widget collapsedBar;
   final List<Widget> slivers;
   final double? expandedContentHeight;
   final double collapsedBarHeight;
   final PreferredSizeWidget? bottom;
-  final Widget? leading;
+  final Widget Function(bool isCollapsed)? leading;
   final bool pinned;
   final bool floating;
   final bool snap;
@@ -57,7 +57,7 @@ class SnappingAppBarBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final slivers = [
       SliverAppBar(
-        actions: actions,
+        actions: actions?.call(isCollapsed),
         snap: snap,
         floating: floating,
         stretch: stretch,
@@ -78,7 +78,7 @@ class SnappingAppBarBody extends StatelessWidget {
         ),
         automaticallyImplyLeading: automaticallyImplyLeading,
         backgroundColor: isCollapsed ? collapsedBackgroundColor : expandedBackgroundColor,
-        leading: leading,
+        leading: leading?.call(isCollapsed),
         flexibleSpace: FlexibleSpaceBar(
           background: expandedContent,
         ),
