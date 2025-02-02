@@ -264,7 +264,7 @@ class SliverSnap extends HookWidget {
         bottom: bottom,
         expandedContent: AnimatedOpacity(
           duration: const Duration(milliseconds: 200),
-          opacity: animatedOpacity.value,
+          opacity: animatedOpacity.value.clamp(0, 1),
           child: expandedContent,
         ),
         leading: leading,
