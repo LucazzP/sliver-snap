@@ -265,11 +265,7 @@ class SliverSnap extends HookWidget {
         backdropWidget: backdropWidget,
         collapsedBar: collapsedContent,
         bottom: bottom,
-        expandedContent: AnimatedOpacity(
-          duration: const Duration(milliseconds: 200),
-          opacity: animatedOpacity.value.clamp(0, 1),
-          child: expandedContent,
-        ),
+        expandedContent: expandedContent,
         leading: leading,
         actions: actions,
         pinned: pinned,
