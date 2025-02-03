@@ -47,6 +47,7 @@ class SnappingScrollNotificationHandler {
     required ValueNotifier<bool> isCollapsedValueNotifier,
     CollapsingStateCallback? onCollapseStateChanged,
     double expandThresholdRatio = 1.75,
+    bool enableSnapCollapseOrExpanded = true,
   }) {
     /// The position at which we either collapse or expand
     ///
@@ -69,7 +70,7 @@ class SnappingScrollNotificationHandler {
     //endregion
 
     //region
-    if (notification is ScrollEndNotification) {
+    if (notification is ScrollEndNotification && enableSnapCollapseOrExpanded) {
       _snapAppBar(
         currentScrollingPosition: currentScrollingPosition,
         expandThresholdPosition: expandThresholdPosition,
